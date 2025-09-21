@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 4.1.1)
 project(OpenGL_STL_Viewer CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+enable_language(OBJC)
 
 # On macOS, we need to find the OpenGL framework
 if(APPLE)
@@ -14,34 +16,21 @@ endif()
 include(FetchContent)
 
 # GLFW for windowing and input
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        3.3.8
-)
-FetchContent_MakeAvailable(glfw)
+find_package(GLFW3 REQUIRED)
+include_directories(${33GLFW3_INCLUDE_DIRS})
+link_libraries(${GLFW3_LIBRARIES})
 
 # GLM for mathematics
-FetchContent_Declare(
-    glm
-    GIT_REPOSITORY https://github.com/g-truc/glm.git
-    GIT_TAG        0.9.9.8
-)
-FetchContent_MakeAvailable(glm)
+find_package(GLM REQUIRED)
 
 # GLEW for OpenGL function loading
-FetchContent_Declare(
-    glew
-    GIT_REPOSITORY https://github.com/nigels-com/glew.git
-    GIT_TAG        glew-2.2.0
-)
-FetchContent_MakeAvailable(glew)
+find_package(GLEW REQUIRED)
 
 # Google Test for unit testing
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.12.1
+  GIT_TAG        v1.17.0
 )
 FetchContent_MakeAvailable(googletest)
 
@@ -61,16 +50,9 @@ target_link_libraries(OpenGL_STL_Viewer PUBLIC
     glfw
     ${OPENGL_LIBRARIES}
     ${CORE_FOUNDATION_FRAMEWORK}
+    glm::glm
+    GLEW::GLEW
 )
-# GLEW needs to be compiled, so we create a library target for it.
-# This part is a bit more complex because GLEW's source is in a `src` subdir.
-add_library(GLEW_LIB STATIC ${glew_SOURCE_DIR}/src/glew.c)
-target_include_directories(GLEW_LIB PUBLIC ${glew_SOURCE_DIR}/include)
-target_compile_definitions(GLEW_LIB PRIVATE GLEW_STATIC) # Important for static linking
-
-# Link our main app against our compiled GLEW lib
-target_link_libraries(OpenGL_STL_Viewer PRIVATE GLEW_LIB)
-
 
 # --- Unit Test Target ---
 enable_testing()
