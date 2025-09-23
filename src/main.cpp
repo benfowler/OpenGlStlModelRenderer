@@ -15,7 +15,7 @@
 #include "Camera.hpp"
 
 // --- Globals ---
-Camera camera(glm::vec3(0.0f, 0.5f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.5f, 60.0f));
 float lastX = 800.0f / 2.0;
 float lastY = 600.0f / 2.0;
 bool firstMouse = true;
@@ -92,7 +92,7 @@ int main() {
 
     // 6. Load model data from STL file
     std::vector<float> vertices;
-    if (!loadSTL("models/cube.stl", vertices)) {
+    if (!loadSTL("models/3DBenchy.stl", vertices)) {
         std::cerr << "Failed to load STL model" << std::endl;
         return -1;
     }
@@ -141,7 +141,8 @@ int main() {
         // Create transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        glm::mat4 model = glm::mat4(1.0f);
+        //glm::mat4 model = glm::mat4(1.0f);
+				glm::mat4 model = glm::rotate(glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.5f)); // Scale down the model if it's too big
 
         phongShader.setMat4("projection", projection);

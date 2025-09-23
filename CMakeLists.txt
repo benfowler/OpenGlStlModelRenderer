@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 4.1.1)
+
 project(OpenGL_STL_Viewer CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -12,19 +13,13 @@ if(APPLE)
     find_library(CORE_FOUNDATION_FRAMEWORK CoreFoundation)
 endif()
 
+# --- Library dependencies
+find_package(GLEW REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(GLM CONFIG REQUIRED)
+
 # --- Dependencies using FetchContent ---
 include(FetchContent)
-
-# GLFW for windowing and input
-find_package(GLFW3 REQUIRED)
-include_directories(${33GLFW3_INCLUDE_DIRS})
-link_libraries(${GLFW3_LIBRARIES})
-
-# GLM for mathematics
-find_package(GLM REQUIRED)
-
-# GLEW for OpenGL function loading
-find_package(GLEW REQUIRED)
 
 # Google Test for unit testing
 FetchContent_Declare(
@@ -34,24 +29,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-
 # --- Main Application Target ---
 add_executable(OpenGL_STL_Viewer src/main.cpp)
 
-# Include directories for dependencies
-target_include_directories(OpenGL_STL_Viewer PUBLIC
-    ${glfw_SOURCE_DIR}/include
-    ${glm_SOURCE_DIR}
-    ${glew_SOURCE_DIR}/include
-)
-
 # Link libraries
-target_link_libraries(OpenGL_STL_Viewer PUBLIC
-    glfw
+target_link_libraries(OpenGL_STL_Viewer PRIVATE
     ${OPENGL_LIBRARIES}
     ${CORE_FOUNDATION_FRAMEWORK}
-    glm::glm
     GLEW::GLEW
+    glfw
+    glm::glm
 )
 
 # --- Unit Test Target ---
