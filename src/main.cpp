@@ -12,10 +12,10 @@
 
 #include "Shader.hpp"
 #include "STLLoader.hpp"
-#include "Camera.hpp"
+#include "OrbitalCamera.hpp"
 
 // --- Globals ---
-Camera camera(glm::vec3(0.0f, 0.5f, 60.0f));
+OrbitalCamera camera;
 float lastX = 800.0f / 2.0;
 float lastY = 600.0f / 2.0;
 bool firstMouse = true;
@@ -134,12 +134,12 @@ int main() {
         // Setup light position. We'll place it relative to the camera for the "60 degrees behind" effect.
         // This is a simple interpretation: place it behind and above the camera in view space.
         // A more robust solution might use spherical coordinates.
-        glm::vec3 lightPos = camera.Position - camera.Front * 2.0f + camera.Up * 3.0f;
+        glm::vec3 lightPos = camera.getPosition(); // - camera.Front * 2.0f + camera.Up * 3.0f;
         phongShader.setVec3("lightPos", lightPos);
-        phongShader.setVec3("viewPos", camera.Position);
+        phongShader.setVec3("viewPos", camera.getPosition());
 
         // Create transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         //glm::mat4 model = glm::mat4(1.0f);
 				glm::mat4 model = glm::rotate(glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
