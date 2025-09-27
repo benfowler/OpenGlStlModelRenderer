@@ -19,7 +19,7 @@ public:
     float mouseSensitivity;
     float zoomSensitivity;
 
-    OrbitalCamera(float initRadius = 5.0f, float initAzimuth = 0.0f, float initPolar = 0.0f)
+    OrbitalCamera(float initRadius = 80.0f, float initAzimuth = 0.0f, float initPolar = 0.0f)
         : radius(initRadius),
           azimuthAngle(initAzimuth),
           polarAngle(initPolar),
@@ -45,11 +45,11 @@ public:
     void ProcessMouseScroll(float yoffset) {
         radius -= yoffset * zoomSensitivity;
         // Clamp the radius to prevent going inside the model or too far away
-        if (radius < 1.0f) {
-            radius = 1.0f;
+        if (radius < 20.0f) {
+            radius = 20.0f;
         }
-        if (radius > 50.0f) {
-            radius = 50.0f;
+        if (radius > 500.0f) {
+            radius = 500.0f;
         }
     }
 
