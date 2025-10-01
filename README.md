@@ -16,10 +16,22 @@ cd $HOME
 brew install vcpkg
 git clone https://github.com/microsoft/vcpkg "$HOME/vcpkg"
 export VCPKG_ROOT="$HOME/vcpkg"
+cd $VCPKG_ROOT
+./bootstrap-vcpkg.sh
 ```
 
 ## Build
 
 ```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=/Users/bfowler/vcpkg/scripts/buildsystems/vcpkg.cmake --fresh .
+cmake -DCMAKE_TOOLCHAIN_FILE=/Users/$USER/vcpkg/scripts/buildsystems/vcpkg.cmake --fresh .
 ```
+
+
+## Set up clangd
+
+Regenerate **compile_commands.json**, if required:
+
+```bash
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+```
+
