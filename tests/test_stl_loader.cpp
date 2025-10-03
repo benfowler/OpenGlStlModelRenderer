@@ -1,9 +1,11 @@
 #include "gtest/gtest.h"
+
 #include <vector>
 #include <string>
 #include <fstream>
 #include <cstdint>
-#include "glm/glm.hpp"
+
+#include <glm/glm.hpp>
 
 // We need to include the STLLoader directly.
 // This is a bit of a hack for a simple test setup, but works.

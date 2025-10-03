@@ -7,6 +7,8 @@
 #include <string>
 #include <sstream>
 
+#include <glm/glm.hpp>
+
 // Reads a 3D vector from a binary stream
 inline glm::vec3 read_vec3(std::ifstream& in) {
     float x, y, z;
